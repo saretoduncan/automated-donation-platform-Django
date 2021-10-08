@@ -15,7 +15,7 @@ from os import environ
 
 from pathlib import Path
 
-# from decouple import config
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,7 +36,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS')
 # Application definition
 
 INSTALLED_APPS = [
-    'donation.apps.DonationConfig',
+    # 'donation.apps.DonationConfig',
     'user_app.apps.UserAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
