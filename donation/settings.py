@@ -16,6 +16,7 @@ from os import environ
 from pathlib import Path
 
 from decouple import config
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,11 +33,14 @@ DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS')
 
-
+AUTH_USER_MODEL = 'user_app.User'
+# AUTH_USER_MODEL = 'YourAppName.YourClassName'
 # Application definition
 
 INSTALLED_APPS = [
-    # 'donation.apps.DonationConfig',
+    'rest_framework',
+    'bootstrap4',
+    'drf_yasg',
     'user_app.apps.UserAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -55,6 +59,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
 
 ROOT_URLCONF = 'donation.urls'
 
@@ -89,6 +103,18 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'NON_FIELD_ERRORS_KEY': 'error',
+    'DEFAULT_AUTHENTICATION_CLASSES': ( 'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=1),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -127,6 +153,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR,'static'),
+]
+
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER='automateddonate@gmail.com'
+EMAIL_HOST_PASSWORD='donate312'
+# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
