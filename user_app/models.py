@@ -44,10 +44,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    category = models.CharField(choices=CATEGORY_OPTIONS, max_length=255,)
     created_at = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    category = models.CharField(choices=CATEGORY_OPTIONS, max_length=255,)
+    
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -66,10 +67,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     username = models.ForeignKey(User, on_delete = models.CASCADE,related_name = 'profile')
-    first_name = models.CharField(max_length = 50,null=True)
-    last_name = models.CharField(max_length = 50,null=True)
-    phone_number = models.IntegerField(null=True)
-    email = models.EmailField(max_length=60, blank=True)
+    phone_number = models.CharField(max_length=10, unique=True, null=False, blank=False)
+    image = models.ImageField(default='default.jpeg')
     
     def __str__(self):
         return self.user.username
+    
+    class Meta:
+        '''
+        to set table name in database
+        '''
+        db_table = "profile"

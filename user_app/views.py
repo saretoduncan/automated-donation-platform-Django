@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework import generics, status, views, permissions
-from .serializers import RegisterSerializer, SetNewPasswordSerializer, ResetPasswordEmailRequestSerializer, EmailVerificationSerializer, LoginSerializer, LogoutSerializer
+from .serializers import RegisterSerializer, SetNewPasswordSerializer,ProfileSerializer, ResetPasswordEmailRequestSerializer, EmailVerificationSerializer, LoginSerializer, LogoutSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import User
+from .models import User, Profile
 from .utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 import jwt
@@ -156,29 +156,15 @@ class LogoutAPIView(generics.GenericAPIView):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-@login_required
-def edit_profile(request,username):
-    current_user = request.user
-    if request.method == 'POST':
-        try:
-            profile = Profile.objects.get(user=current_user)
-            form = UpdateProfile(request.POST,instance=profile)
-            if form.is_valid():
-                profile = form.save(commit=False)
-                profile.user = current_user
-                profile.save()
-            return redirect('index')
-        except:
-            form = UpdateProfile(request.POST)
-            if form.is_valid():
-                profile = form.save(commit=False)
-                profile.user = current_user
-                profile.save()
-            return redirect('index')
-    else:
-        if Profile.objects.filter(user=current_user):
-            profile = Profile.objects.get(user=current_user)
-            form = UpdateProfile(instance=profile)
-        else:
-            form = UpdateProfile()
-    return render(request,'temps/edit_profile.html',{"form":form})
+class ProfileAPIView(generics.GenericAPIView):
+    serializer_class = ProfileSerializer
+    # permission_classes = (permissions.IsAuthenticated,)
+
+    def post (self, request):
+        user = request.data
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        user_data = serializer.data
+
+        return Response(user_data, status=status.HTTP_201_CREATED)

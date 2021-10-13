@@ -22,3 +22,8 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('email' ,'username','category','password1', 'password2', )
+
+class UpdateProfile(forms.ModelForm):
+    class Meta:
+        model=Profile
+        fields = ('first_name','last_name','phone_number','email')
