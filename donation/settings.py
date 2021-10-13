@@ -45,8 +45,6 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'donorsapp'
-    'beneficiaries',
-    'charity',
 ]
 
 MIDDLEWARE = [
