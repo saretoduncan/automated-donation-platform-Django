@@ -5,7 +5,7 @@ from django.conf import settings
 
 
 urlpatterns = [
-     path('api/charities/', views.ProjectList.as_view()),
+     path('api/charities/', views.CharityList.as_view()),
     
     
 ]
