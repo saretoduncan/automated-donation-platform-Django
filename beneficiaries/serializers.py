@@ -2,7 +2,7 @@ from django.db.models import fields
 from rest_framework import serializers
 from . models import beneficiary
  
-class beneficiarySerializers(serializers.ModelSerializer):
+class BeneficiarySerializers(serializers.ModelSerializer):
 
   class Meta:
     model = beneficiary

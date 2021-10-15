@@ -43,6 +43,8 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('user_app.urls')),
+    path('auth/', include('charity.urls')),
+    path('beneficiaries/', include('beneficiaries.urls')),
     path('', schema_view.with_ui('swagger',
                                  cache_timeout=0), name='schema-swagger-ui'),
 
