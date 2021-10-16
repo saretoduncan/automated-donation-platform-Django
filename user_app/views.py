@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework import generics, status, views, permissions
-from .serializers import RegisterSerializer, SetNewPasswordSerializer,ProfileSerializer, ResetPasswordEmailRequestSerializer, EmailVerificationSerializer, LoginSerializer, LogoutSerializer
+from .serializers import RegisterSerializer, SetNewPasswordSerializer, ResetPasswordEmailRequestSerializer, EmailVerificationSerializer, LoginSerializer, LogoutSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import User, Profile
+from .models import User
 from .utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 import jwt
@@ -46,9 +46,7 @@ class RegisterView(generics.GenericAPIView):
 
         Util.send_email(data)
         return Response(user_data, status=status.HTTP_201_CREATED)
-        # email_body='Hi '+user.username+' welcome to our Automated Donation application.'
 
-        # data={'email_body':email_body, 'to_email':user.email, 'email_subject': 'Welcome'}
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
 
@@ -155,16 +153,3 @@ class LogoutAPIView(generics.GenericAPIView):
         serializer.save()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-class ProfileAPIView(generics.GenericAPIView):
-    serializer_class = ProfileSerializer
-    # permission_classes = (permissions.IsAuthenticated,)
-
-    def post (self, request):
-        user = request.data
-        serializer = self.serializer_class(data=user)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        user_data = serializer.data
-
-        return Response(user_data, status=status.HTTP_201_CREATED)

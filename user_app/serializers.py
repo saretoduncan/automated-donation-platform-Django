@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Profile
+from .models import User
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
@@ -147,20 +147,4 @@ class LogoutSerializer(serializers.Serializer):
         except TokenError:
             self.fail('bad_token')
 
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ('username','phone_number','image')
-    def validate(self, attrs):
-        username = attrs.get('username', '')
-        phone_number= attrs.get('phone_number', '')
-        image = attrs.get('image', '')
 
-        if not username.isalnum():
-            raise serializers.ValidationError(
-                self.default_error_messages)
-        return attrs
-
-    def create(self, validated_data):
-        return User.objects.create_profile(**validated_data)
-   

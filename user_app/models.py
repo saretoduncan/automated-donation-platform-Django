@@ -50,8 +50,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(auto_now=True)
     
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['password']
 
     objects = UserManager()
 
@@ -65,16 +65,3 @@ class User(AbstractBaseUser, PermissionsMixin):
             'access': str(refresh.access_token)
         }
 
-class Profile(models.Model):
-    username = models.ForeignKey(User, on_delete = models.CASCADE,related_name = 'profile')
-    phone_number = models.CharField(max_length=10, unique=True, null=False, blank=False)
-    image = models.ImageField(default='default.jpeg')
-    
-    def __str__(self):
-        return self.user.username
-    
-    class Meta:
-        '''
-        to set table name in database
-        '''
-        db_table = "profile"
