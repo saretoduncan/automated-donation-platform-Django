@@ -22,12 +22,12 @@ class UserManager(BaseUserManager):
         user.save()
         return user
 
-    def create_superuser(self, username, email, password=None):
+    def create_superuser(self, username, email, password):
         if password is None:
             raise TypeError('Password should not be none')
 
         user = self.create_user(username, email, password)
-        user.is_superuser = True
+        user.is_active = True
         user.is_staff = True
         user.save()
         return user
@@ -41,9 +41,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     ]
     username = models.CharField(max_length=255, unique=True, db_index=True)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
-    is_verified = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=True)
     category = models.CharField(choices=CATEGORY_OPTIONS, max_length=255,)
     created_at = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
@@ -51,7 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['password']
+    REQUIRED_FIELDS = ['email']
 
     objects = UserManager()
 
