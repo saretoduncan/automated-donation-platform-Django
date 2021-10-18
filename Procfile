@@ -1,1 +1,1 @@
-web: gunicon donation .wsgi
+web: gunicon donation.wsgi
