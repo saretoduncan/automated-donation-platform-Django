@@ -6,5 +6,4 @@ class donorsSerializers(serializers.ModelSerializer):
 
   class Meta:
     model = donors
-
-    fields= '__all__'
+    fields= ['donor_name', 'email_addres', 'bio', 'phone_number']

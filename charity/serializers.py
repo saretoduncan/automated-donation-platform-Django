@@ -6,5 +6,4 @@ class CharitySerializers(serializers.ModelSerializer):
 
   class Meta:
     model = charity
-
     fields= '__all__'
