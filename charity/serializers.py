@@ -7,4 +7,4 @@ class charitySerializers(serializers.ModelSerializer):
   class Meta:
     model = charity
 
-    fields= '__all__'
+    fields= [' charity_id','charityname','charity_address','phone_number','charity_bio','trustdeed']
