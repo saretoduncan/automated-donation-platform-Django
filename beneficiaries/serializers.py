@@ -7,4 +7,4 @@ class beneficiarySerializers(serializers.ModelSerializer):
   class Meta:
     model = beneficiary
 
-    fields= '__all__'
+    fields= ['beneficiary_id','beneficiaryname','beneficiaryaddress','phonenumber']
