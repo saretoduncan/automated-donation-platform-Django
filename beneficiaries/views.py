@@ -12,10 +12,17 @@ from .serializer import BeneficiarySerializer
 # Create your views here.
 
 class BeneficiaryList(APIView):
-    def get(self, request, format=None):
+    def get(self, request, id):
         Beneficiiaries = Beneficiary.objects.all()
         serializers = BeneficiarySerializer(projects, many=True)
         return Response(serializers.data)
 
-def post(self):
-    pass  
+
+def post(self, request):
+    user = request.data
+    serializer = self.serializer_class(data=user)
+    # serializer.is_valid(raise_exception=True)
+    serializer.save()
+    user_data = serializer.data
+
+    return Response(user_data) 
